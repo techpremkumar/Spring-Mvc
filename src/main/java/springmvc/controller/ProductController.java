@@ -30,15 +30,11 @@ public class ProductController {
     }
 
     // GET: Retrieve product by ID
-    @GetMapping("/{id}")
-    public ResponseEntity<Product> getProductById(
-            @PathVariable int id) {
+    @GetMapping("/header")
+    public String getHeader(
+            @RequestHeader("User-Agent") String userAgent) {
 
-        return products.stream()
-                .filter(product -> product.getId() == id)
-                .findFirst()
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        return "Your client is: " + userAgent;
     }
 
     @PostMapping
