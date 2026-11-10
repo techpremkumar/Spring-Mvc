@@ -5,6 +5,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.validation.BindingResult;
+import java.util.HashMap;
+import java.util.Map;
 
 import jakarta.validation.Valid;
 import springmvc.model.Product;
@@ -36,6 +38,7 @@ public class ProductController {
     }
 
     // POST: Add a new product with validation
+
     @PostMapping
     public ResponseEntity<?> addProduct(
             @Valid @RequestBody Product product,
@@ -43,13 +46,14 @@ public class ProductController {
 
         if (result.hasErrors()) {
 
-            Map<String, String> errors = result.getFieldErrors()
-                    .stream()
-                    .collect(Collectors.toMap(
-                            error -> error.getField(),
-                            error -> error.getDefaultMessage(),
-                            (first, second) -> first
-                    ));
+            Map<String, String> errors = new HashMap<>();
+
+            result.getFieldErrors().forEach(error ->
+                    errors.put(
+                            error.getField(),
+                            error.getDefaultMessage()
+                    )
+            );
 
             return ResponseEntity
                     .badRequest()
@@ -62,4 +66,6 @@ public class ProductController {
                 .status(HttpStatus.CREATED)
                 .body(product);
     }
+
 }
+
