@@ -52,7 +52,6 @@ public class ProductController {
                 .status(HttpStatus.CREATED)
                 .body(product);
     }
-
     @PutMapping("/{id}")
     public ResponseEntity<Product> updateProduct(
             @PathVariable int id,
@@ -60,9 +59,12 @@ public class ProductController {
             @RequestBody Product product) {
 
         for (int i = 0; i < products.size(); i++) {
+
             if (products.get(i).getId() == id) {
+
                 product.setId(id);
                 products.set(i, product);
+
                 return ResponseEntity.ok(product);
             }
         }

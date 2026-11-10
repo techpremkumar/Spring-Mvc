@@ -10,6 +10,8 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.PositiveOrZero;
 import jakarta.validation.constraints.Size;
 import springmvc.validation.ValidProductName;
+import jakarta.validation.Valid;
+import springmvc.model.Manufacturer;
 
 public class Product {
 
@@ -18,7 +20,8 @@ public class Product {
     @Positive(message = "Product ID must be positive",
             groups = OnUpdate.class)
     private Integer id;
-
+    @Valid
+    private Manufacturer manufacturer;
     @NotBlank(message = "Product name is required",
             groups = OnCreate.class)
     private String name;
