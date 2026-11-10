@@ -6,11 +6,16 @@ import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.validation.annotation.Validated;
+import springmvc.validation.OnCreate;
+import springmvc.validation.OnUpdate;
 
 import springmvc.model.Product;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.springframework.validation.annotation.Validated;
+import springmvc.validation.OnCreate;
 
 @RestController
 @RequestMapping("/api/products")
@@ -36,15 +41,32 @@ public class ProductController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    // POST: Add a new product with validation
     @PostMapping
     public ResponseEntity<Product> addProduct(
-            @Valid @RequestBody Product product) {
+            @Validated(OnCreate.class)
+            @RequestBody Product product) {
 
         products.add(product);
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(product);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Product> updateProduct(
+            @PathVariable int id,
+            @Validated(OnUpdate.class)
+            @RequestBody Product product) {
+
+        for (int i = 0; i < products.size(); i++) {
+            if (products.get(i).getId() == id) {
+                product.setId(id);
+                products.set(i, product);
+                return ResponseEntity.ok(product);
+            }
+        }
+
+        return ResponseEntity.notFound().build();
     }
 }

@@ -1,6 +1,9 @@
 
 package springmvc.model;
-
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+import springmvc.validation.OnCreate;
+import springmvc.validation.OnUpdate;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
@@ -10,20 +13,20 @@ import springmvc.validation.ValidProductName;
 
 public class Product {
 
-    @PositiveOrZero(message = "Product ID cannot be negative")
-    private int id;
-    @Valid
-    private Manufacturer manufacturer;
-    @NotBlank(message = "Product name cannot be empty")
-    @Size(min = 2, max = 100,
-            message = "Product name must contain 2 to 100 characters")
-    @ValidProductName
+    @NotNull(message = "Product ID is required",
+            groups = OnUpdate.class)
+    @Positive(message = "Product ID must be positive",
+            groups = OnUpdate.class)
+    private Integer id;
+
+    @NotBlank(message = "Product name is required",
+            groups = OnCreate.class)
     private String name;
 
     @DecimalMin(value = "0.01",
-            message = "Product price must be greater than zero")
+            message = "Product price must be greater than zero",
+            groups = OnCreate.class)
     private double price;
-
     public Product() {
     }
 
