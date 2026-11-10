@@ -5,6 +5,7 @@ import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.PositiveOrZero;
 import jakarta.validation.constraints.Size;
+import springmvc.validation.ValidProductName;
 
 public class Product {
 
@@ -14,6 +15,7 @@ public class Product {
     @NotBlank(message = "Product name cannot be empty")
     @Size(min = 2, max = 100,
             message = "Product name must contain 2 to 100 characters")
+    @ValidProductName
     private String name;
 
     @DecimalMin(value = "0.01",
